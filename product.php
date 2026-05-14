@@ -26,6 +26,7 @@ if ($product['price'] > 0 && $product['sale_price'] > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $product['name']; ?> – Astroyogi Store</title>
+    <base href="<?= BASE_URL ?>">
     
       <!-- SWIPER CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -266,7 +267,11 @@ if ($product['price'] > 0 && $product['sale_price'] > 0) {
                         <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#4468E1] text-white text-[11px] px-4 py-1.5 rounded-lg font-black opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-xl z-10">
                             <i class="fas fa-gift mr-2"></i> Add to cart for Free Gifts above ₹999
                         </div>
-                        <button class="w-full bg-[#2D2D2D] text-white py-3 rounded-2xl font-black text-xl hover:bg-black transition-all transform hover:scale-[1.01] active:scale-95 shadow-lg shadow-black/10">
+                        <button class="w-full bg-[#2D2D2D] text-white py-3 rounded-2xl font-black text-xl hover:bg-black transition-all transform hover:scale-[1.01] active:scale-95 shadow-lg shadow-black/10 add-to-cart-btn"
+                                data-id="<?= $product['id'] ?>" 
+                                data-name="<?= htmlspecialchars($product['name']) ?>" 
+                                data-price="<?= $product['sale_price'] > 0 ? $product['sale_price'] : $product['price'] ?>" 
+                                data-image="<?= get_image_url($product['image']) ?>">
                             Add to cart
                         </button>
                     </div>

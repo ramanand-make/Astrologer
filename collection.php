@@ -1,9 +1,29 @@
+<?php 
+require_once 'includes/functions.php';
+$conn = getSashDBConnection();
+
+$categorySlug = isset($_GET['category']) ? $_GET['category'] : '';
+$category = null;
+$category_id = null;
+$title = "Best Sellers";
+
+if ($categorySlug) {
+    $category = getCategoryBySlug($conn, $categorySlug);
+    if ($category) {
+        $category_id = $category['id'];
+        $title = $category['name'];
+    }
+}
+
+$products = getProducts($conn, 12, $category_id);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astroyogi Store – Buy Astrology Remedies & Spiritual Products</title>
+    <title><?= htmlspecialchars($title) ?> – Astroyogi Store</title>
+    <base href="<?= BASE_URL ?>">
     <meta name="description" content="Shop authentic spiritual products, crystals, rudraksha, gemstones and more at Astroyogi Store. Lab certified, ethically sourced with 25+ years of legacy.">
     <!-- SWIPER CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -49,7 +69,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="<?= BASE_URL ?>assets/css/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -95,7 +115,7 @@
     <!-- Best Sellers Section -->
     <section class="best-seller-section py-5">
         <div class="container">
-            <h1>Best Sellers</h1>
+            <h1><?= htmlspecialchars($title) ?></h1>
             <div class="product-topbar">
 
             <button class="filter-btn">
@@ -123,126 +143,69 @@
         </div>
             
             <div class="row g-4">
-                <!-- Product 1 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">SALE</span>
-                            <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=400&h=400&fit=crop" alt="Evil Eye Car Hanging">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Evil Eye Car Hanging</h3>
-                            <div class="product-rating">
-                                <span class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </span>
-                                <span class="rating-text">4.5 (47)</span>
+                <?php if (empty($products)): ?>
+                    <div class="col-12 text-center py-5">
+                        <h3>No products found in this collection.</h3>
+                        <a href="collection.php" class="btn btn-outline-dark mt-3">View All Products</a>
+                    </div>
+                <?php else: ?>
+                    <?php 
+                    foreach ($products as $index => $prod): 
+                        $delay = ($index + 1) * 100;
+                        $discount = 0;
+                        if ($prod['price'] > 0 && $prod['sale_price'] > 0) {
+                            $discount = round((($prod['price'] - $prod['sale_price']) / $prod['price']) * 100);
+                        }
+                    ?>
+                    <!-- Product <?= $index + 1 ?> -->
+                    <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="<?= $delay ?>">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <?php if ($discount > 0): ?>
+                                    <span class="product-badge">SALE</span>
+                                <?php endif; ?>
+                                <a href="product/<?= htmlspecialchars($prod['slug']) ?>">
+                                    <img src="<?= get_image_url($prod['image']) ?>" alt="<?= htmlspecialchars($prod['name']) ?>">
+                                </a>
+                                <button class="quick-view-btn">Quick View</button>
                             </div>
-                            <div class="product-price">
-                                <span class="original-price">₹1,999</span>
-                                <span class="current-price">₹799</span>
+                            <div class="product-info">
+                                <h3 class="product-title">
+                                    <a href="product/<?= htmlspecialchars($prod['slug']) ?>" class="text-decoration-none text-dark">
+                                        <?= htmlspecialchars($prod['name']) ?>
+                                    </a>
+                                </h3>
+                                <div class="product-rating">
+                                    <span class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </span>
+                                    <span class="rating-text">4.5 (47)</span>
+                                </div>
+                                <div class="product-price">
+                                    <?php if ($prod['sale_price'] > 0): ?>
+                                        <span class="original-price">₹<?= number_format($prod['price'], 2) ?></span>
+                                        <span class="current-price">₹<?= number_format($prod['sale_price'], 2) ?></span>
+                                    <?php else: ?>
+                                        <span class="current-price">₹<?= number_format($prod['price'], 2) ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <button class="add-to-cart-btn">Add to Cart</button>
                             </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Product 2 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">SALE</span>
-                            <img src="https://images.unsplash.com/photo-1602524816989-93a0e1c41a38?w=400&h=400&fit=crop" alt="7 Mukhi Rudraksha Bracelet">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">7 Mukhi Rudraksha Bracelet</h3>
-                            <div class="product-rating">
-                                <span class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </span>
-                                <span class="rating-text">4.6 (58)</span>
-                            </div>
-                            <div class="product-price">
-                                <span class="original-price">₹1,999</span>
-                                <span class="current-price">₹699</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Product 3 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">SALE</span>
-                            <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?w=400&h=400&fit=crop" alt="Pyrite Tortoise">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Pyrite Tortoise (Kachhua) for Money & Protection</h3>
-                            <div class="product-rating">
-                                <span class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </span>
-                                <span class="rating-text">4.7 (12)</span>
-                            </div>
-                            <div class="product-price">
-                                <span class="original-price">₹1,299</span>
-                                <span class="current-price">₹719</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Product 4 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge">SALE</span>
-                            <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=400&h=400&fit=crop" alt="Dhan Yog Bracelet">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Dhan Yog Bracelet</h3>
-                            <div class="product-rating">
-                                <span class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </span>
-                                <span class="rating-text">4.8 (37)</span>
-                            </div>
-                            <div class="product-price">
-                                <span class="original-price">₹1,999</span>
-                                <span class="current-price">₹699</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             
+            <?php if (!empty($products)): ?>
             <div class="text-center mt-5">
-                <a href="#" class="btn-primary-custom">View All Products</a>
+                <a href="collection.php" class="btn-primary-custom">View All Products</a>
             </div>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -251,3 +214,5 @@
     
 
     <?php include('includes/footer.php')?>
+</body>
+</html>

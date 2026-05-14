@@ -1,5 +1,13 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/../admin/config/database.php';
+
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+$base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/";
+define('BASE_URL', $base_url);
+
 
 function getNavbarMenu($conn) {
     $sql = "SELECT * FROM navbar_menu WHERE status = 1 AND parent_id = 0 ORDER BY order_no ASC";
@@ -42,6 +50,14 @@ function getCategoriesByName($conn, $name) {
         return $subResult->fetch_all(MYSQLI_ASSOC);
     }
     return [];
+}
+
+function getCategoryBySlug($conn, $slug) {
+    $sql = "SELECT * FROM categories WHERE slug = ? AND status = 1 LIMIT 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $slug);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_assoc();
 }
 
 function getProducts($conn, $limit = 8, $category_id = null) {
@@ -95,7 +111,17 @@ function getProductImages($conn, $product_id) {
 function get_image_url($path) {
     if (empty($path)) return 'assets/images/placeholder.jpg';
     if (filter_var($path, FILTER_VALIDATE_URL)) return $path;
+    
+    $cleanPath = ltrim($path, '/');
+    
+    // Check if file exists in root
+    if (file_exists(__DIR__ . '/../' . $cleanPath)) {
+        return $cleanPath;
+    }
+    
     // Check if it already has admin prefix
-    if (strpos($path, 'admin/') === 0) return $path;
-    return 'admin/' . ltrim($path, '/');
+    if (strpos($cleanPath, 'admin/') === 0) return $cleanPath;
+    
+    // Default to admin path
+    return 'admin/' . $cleanPath;
 }

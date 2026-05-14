@@ -1,0 +1,17 @@
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+# Redirect collection.php?category=gemini to /collection/gemini
+RewriteCond %{THE_REQUEST} /collection\.php\?category=([^&\s]+) [NC]
+RewriteRule ^ collection/%1? [R=301,L]
+
+# Internal rewrite for /collection/gemini to collection.php?category=gemini
+RewriteRule ^collection/([^/]+)/?$ collection.php?category=$1 [L,QSA]
+
+# Redirect product.php?slug=product-name to /product/product-name
+RewriteCond %{THE_REQUEST} /product\.php\?slug=([^&\s]+) [NC]
+RewriteRule ^ product/%1? [R=301,L]
+
+# Internal rewrite for /product/product-name to product.php?slug=product-name
+RewriteRule ^product/([^/]+)/?$ product.php?slug=$1 [L,QSA]

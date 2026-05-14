@@ -1,9 +1,11 @@
+<?php require_once 'includes/functions.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Astroyogi Store – Buy Astrology Remedies & Spiritual Products</title>
+    <base href="<?= BASE_URL ?>">
     <meta name="description" content="Shop authentic spiritual products, crystals, rudraksha, gemstones and more at Astroyogi Store. Lab certified, ethically sourced with 25+ years of legacy.">
     <!-- SWIPER CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -185,14 +187,14 @@ var swiper = new Swiper(".heroSwiper", {
                             <?php if ($discount > 0): ?>
                                 <span class="product-badge">SALE</span>
                             <?php endif; ?>
-                            <a href="product.php?slug=<?= htmlspecialchars($prod['slug']) ?>">
+                            <a href="product/<?= htmlspecialchars($prod['slug']) ?>">
                                 <img src="<?= htmlspecialchars($prod['image']) ?>" alt="<?= htmlspecialchars($prod['name']) ?>">
                             </a>
                             <button class="quick-view-btn">Quick View</button>
                         </div>
                         <div class="product-info">
                             <h3 class="product-title">
-                                <a href="product.php?slug=<?= htmlspecialchars($prod['slug']) ?>" class="text-decoration-none text-dark">
+                                <a href="product/<?= htmlspecialchars($prod['slug']) ?>" class="text-decoration-none text-dark">
                                     <?= htmlspecialchars($prod['name']) ?>
                                 </a>
                             </h3>
@@ -214,7 +216,13 @@ var swiper = new Swiper(".heroSwiper", {
                                     <span class="current-price">₹<?= number_format($prod['price'], 2) ?></span>
                                 <?php endif; ?>
                             </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+                            <button class="add-to-cart-btn" 
+                                    data-id="<?= $prod['id'] ?>" 
+                                    data-name="<?= htmlspecialchars($prod['name']) ?>" 
+                                    data-price="<?= $prod['sale_price'] > 0 ? $prod['sale_price'] : $prod['price'] ?>" 
+                                    data-image="<?= get_image_url($prod['image']) ?>">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -352,81 +360,47 @@ var swiper = new Swiper(".heroSwiper", {
             </div>
             
             <div class="row g-4">
-                <!-- Combo 1 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <?php 
+                // Fetch products from 'Combos' category (ID 14 based on previous scan) or just any 4 products
+                $combos = getProducts($conn, 4); 
+                foreach ($combos as $index => $prod): 
+                    $delay = ($index + 1) * 100;
+                ?>
+                <!-- Combo <?= $index + 1 ?> -->
+                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="<?= $delay ?>">
                     <div class="product-card">
                         <div class="product-image">
                             <span class="product-badge" style="background: #D4AF37;">COMBO</span>
-                            <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=400&h=400&fit=crop" alt="Evil Eye Combo">
+                            <a href="product/<?= htmlspecialchars($prod['slug']) ?>">
+                                <img src="<?= get_image_url($prod['image']) ?>" alt="<?= htmlspecialchars($prod['name']) ?>">
+                            </a>
                             <button class="quick-view-btn">Quick View</button>
                         </div>
                         <div class="product-info">
-                            <h3 class="product-title">Gold Plated Evil Eye Bracelet & Pendant Combo</h3>
+                            <h3 class="product-title">
+                                <a href="product/<?= htmlspecialchars($prod['slug']) ?>" class="text-decoration-none text-dark">
+                                    <?= htmlspecialchars($prod['name']) ?>
+                                </a>
+                            </h3>
                             <div class="product-price">
-                                <span class="original-price">₹3,999</span>
-                                <span class="current-price">₹2,499</span>
+                                <?php if ($prod['sale_price'] > 0): ?>
+                                    <span class="original-price">₹<?= number_format($prod['price'], 2) ?></span>
+                                    <span class="current-price">₹<?= number_format($prod['sale_price'], 2) ?></span>
+                                <?php else: ?>
+                                    <span class="current-price">₹<?= number_format($prod['price'], 2) ?></span>
+                                <?php endif; ?>
                             </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+                            <button class="add-to-cart-btn" 
+                                    data-id="<?= $prod['id'] ?>" 
+                                    data-name="<?= htmlspecialchars($prod['name']) ?>" 
+                                    data-price="<?= $prod['sale_price'] > 0 ? $prod['sale_price'] : $prod['price'] ?>" 
+                                    data-image="<?= get_image_url($prod['image']) ?>">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Combo 2 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge" style="background: #D4AF37;">COMBO</span>
-                            <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?w=400&h=400&fit=crop" alt="Pyrite Combo">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Raw Pyrite Bracelet with Charging Plate</h3>
-                            <div class="product-price">
-                                <span class="original-price">₹2,499</span>
-                                <span class="current-price">₹1,549</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Combo 3 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge" style="background: #D4AF37;">COMBO</span>
-                            <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=400&h=400&fit=crop" alt="Love & Money Combo">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Love & Money Bracelet with Charging Plate</h3>
-                            <div class="product-price">
-                                <span class="original-price">₹2,499</span>
-                                <span class="current-price">₹1,549</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Combo 4 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <span class="product-badge" style="background: #D4AF37;">COMBO</span>
-                            <img src="https://images.unsplash.com/photo-1602524816989-93a0e1c41a38?w=400&h=400&fit=crop" alt="Karungali Mala Combo">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Karungali Mala and Trishul Travel Blessing</h3>
-                            <div class="product-price">
-                                <span class="original-price">₹1,999</span>
-                                <span class="current-price">₹1,249</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
             
             <div class="text-center mt-4">
@@ -471,7 +445,7 @@ var swiper = new Swiper(".heroSwiper", {
                     <div class="col-lg-6">
                         <div class="featured-details">
                             <h2 class="featured-title">
-                                <a href="product.php?slug=<?= htmlspecialchars($feat['slug']) ?>" class="text-decoration-none text-dark">
+                                <a href="product/<?= htmlspecialchars($feat['slug']) ?>" class="text-decoration-none text-dark">
                                     <?= htmlspecialchars($feat['name']) ?>
                                 </a>
                             </h2>
@@ -491,7 +465,14 @@ var swiper = new Swiper(".heroSwiper", {
                                 <input type="text" class="qty-input" value="1" id="qtyInput" readonly>
                                 <button class="qty-btn" onclick="increaseQty()">+</button>
                             </div>
-                            <button class="btn-primary-custom" style="width: 100%; padding: 16px;">Add to Cart</button>
+                            <button class="btn-primary-custom add-to-cart-btn" 
+                                    style="width: 100%; padding: 16px;"
+                                    data-id="<?= $feat['id'] ?>" 
+                                    data-name="<?= htmlspecialchars($feat['name']) ?>" 
+                                    data-price="<?= $feat['sale_price'] > 0 ? $feat['sale_price'] : $feat['price'] ?>" 
+                                    data-image="<?= get_image_url($feat['image']) ?>">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -524,15 +505,26 @@ var swiper = new Swiper(".heroSwiper", {
             </div>
             
             <div class="row g-4">
-                <!-- Product 1 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <?php 
+                $editorsPick = getProducts($conn, 4); 
+                foreach ($editorsPick as $index => $prod): 
+                    $delay = ($index + 1) * 100;
+                ?>
+                <!-- Product <?= $index + 1 ?> -->
+                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="<?= $delay ?>">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1602524816989-93a0e1c41a38?w=400&h=400&fit=crop" alt="7 Mukhi Rudraksha Bracelet">
+                            <a href="product/<?= htmlspecialchars($prod['slug']) ?>">
+                                <img src="<?= get_image_url($prod['image']) ?>" alt="<?= htmlspecialchars($prod['name']) ?>">
+                            </a>
                             <button class="quick-view-btn">Quick View</button>
                         </div>
                         <div class="product-info">
-                            <h3 class="product-title">7 Mukhi Rudraksha Bracelet</h3>
+                            <h3 class="product-title">
+                                <a href="product/<?= htmlspecialchars($prod['slug']) ?>" class="text-decoration-none text-dark">
+                                    <?= htmlspecialchars($prod['name']) ?>
+                                </a>
+                            </h3>
                             <div class="product-rating">
                                 <span class="stars">
                                     <i class="fas fa-star"></i>
@@ -544,97 +536,24 @@ var swiper = new Swiper(".heroSwiper", {
                                 <span class="rating-text">4.6 (58)</span>
                             </div>
                             <div class="product-price">
-                                <span class="original-price">₹1,999</span>
-                                <span class="current-price">₹699</span>
+                                <?php if ($prod['sale_price'] > 0): ?>
+                                    <span class="original-price">₹<?= number_format($prod['price'], 2) ?></span>
+                                    <span class="current-price">₹<?= number_format($prod['sale_price'], 2) ?></span>
+                                <?php else: ?>
+                                    <span class="current-price">₹<?= number_format($prod['price'], 2) ?></span>
+                                <?php endif; ?>
                             </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+                            <button class="add-to-cart-btn" 
+                                    data-id="<?= $prod['id'] ?>" 
+                                    data-name="<?= htmlspecialchars($prod['name']) ?>" 
+                                    data-price="<?= $prod['sale_price'] > 0 ? $prod['sale_price'] : $prod['price'] ?>" 
+                                    data-image="<?= get_image_url($prod['image']) ?>">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Product 2 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop" alt="Amethyst Pendant">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Amethyst Pendant</h3>
-                            <div class="product-rating">
-                                <span class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </span>
-                                <span class="rating-text">5.0 (2)</span>
-                            </div>
-                            <div class="product-price">
-                                <span class="original-price">₹1,499</span>
-                                <span class="current-price">₹999</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Product 3 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?w=400&h=400&fit=crop" alt="Pyrite Pendant">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Pyrite Pendant</h3>
-                            <div class="product-rating">
-                                <span class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </span>
-                                <span class="rating-text">5.0 (1)</span>
-                            </div>
-                            <div class="product-price">
-                                <span class="original-price">₹1,499</span>
-                                <span class="current-price">₹1,099</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Product 4 -->
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=400&h=400&fit=crop" alt="Pyrite Raw Stone">
-                            <button class="quick-view-btn">Quick View</button>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Pyrite Raw Stone</h3>
-                            <div class="product-rating">
-                                <span class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </span>
-                                <span class="rating-text">5.0 (2)</span>
-                            </div>
-                            <div class="product-price">
-                                <span class="original-price">₹999</span>
-                                <span class="current-price">₹799</span>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
