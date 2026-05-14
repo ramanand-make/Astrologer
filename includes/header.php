@@ -3,6 +3,32 @@ require_once __DIR__ . '/functions.php';
 $conn = getSashDBConnection();
 $navbarMenu = getNavbarMenu($conn);
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-container">
+
+    <!-- Left / spacer -->
+    <div class="topbar-left"></div>
+
+    <!-- Center message -->
+    <div class="topbar-center">
+      <span class="icon">⬡</span>
+      <span class="text">
+        Just Launched: New Essentials for Your Spiritual Journey
+      </span>
+      <a href="#" class="shop-link">
+        Shop Now <span class="arrow">↗</span>
+      </a>
+    </div>
+
+    <!-- Right icon -->
+    <div class="topbar-right">
+      <a href="#" class="insta-icon">  <i class="fa-brands fa-instagram"></i></a>
+    </div>
+
+  </div>
+</div>
 <header class="main-header">
     <div class="container">
         <div class="d-flex align-items-center justify-content-between py-3">
@@ -16,37 +42,77 @@ $navbarMenu = getNavbarMenu($conn);
             </a>
 
             <!-- Desktop Navigation -->
-            <nav class="nav-desktop d-none d-lg-flex align-items-center">
+            <!-- Desktop Navigation -->
+<nav class="nav-desktop d-none d-lg-flex align-items-center">
 
-                <?php foreach ($navbarMenu as $item): ?>
-                    <?php if (!empty($item['children'])): ?>
-                        <div class="dropdown-custom">
-                            <a href="<?= htmlspecialchars($item['link']) ?>" class="nav-link-custom">
-                                <?= htmlspecialchars($item['title']) ?> <i class="fas fa-chevron-down ms-1" style="font-size: 10px;"></i>
-                            </a>
+    <?php foreach ($navbarMenu as $item): ?>
 
-                            <div class="dropdown-menu-custom">
-                                <?php foreach ($item['children'] as $child): ?>
-                                    <?php 
-                                        $childLink = isset($child['link']) ? $child['link'] : 'collection/' . $child['slug'];
-                                        $childTitle = isset($child['title']) ? $child['title'] : $child['name'];
-                                    ?>
-                                    <a href="<?= htmlspecialchars($childLink) ?>"><?= htmlspecialchars($childTitle) ?></a>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    <?php else: ?>
-                        <a href="<?= htmlspecialchars($item['link']) ?>" class="nav-link-custom"><?= htmlspecialchars($item['title']) ?></a>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+        <?php if (!empty($item['children'])): ?>
 
-            </nav>
+            <div class="dropdown-custom">
+
+                <a href="<?= htmlspecialchars($item['link']) ?>" class="nav-link-custom">
+                    <?= htmlspecialchars($item['title']) ?>
+                    <i class="fas fa-chevron-down ms-1" style="font-size: 10px;"></i>
+                </a>
+
+                <div class="dropdown-menu-custom">
+
+                    <?php foreach ($item['children'] as $child): ?>
+
+                        <?php
+                            $childLink = '/collection/' . $child['slug'];
+
+                            $childTitle = isset($child['title'])
+                                ? $child['title']
+                                : $child['name'];
+                        ?>
+
+                        <a href="<?= htmlspecialchars($childLink) ?>">
+                            <?= htmlspecialchars($childTitle) ?>
+                        </a>
+
+                    <?php endforeach; ?>
+
+                </div>
+
+            </div>
+
+        <?php else: ?>
+
+            <!-- <a href="<?= htmlspecialchars($item['link']) ?>" class="nav-link-custom">
+                <?= htmlspecialchars($item['title']) ?>
+            </a> -->
+
+        <?php endif; ?>
+
+    <?php endforeach; ?>
+
+
+    <!-- Static Links -->
+    <a href="/collection/combo" class="nav-link-custom">Combo</a>
+
+    <a href="/collection/gifting" class="nav-link-custom">Gifting</a>
+
+    <a href="/collection/siddh-collections" class="nav-link-custom">
+        Siddh Collections
+    </a>
+
+    <a href="/collection/pooja-need" class="nav-link-custom">
+        Pooja Need
+    </a>
+
+    <a href="/collection/mala" class="nav-link-custom">
+        Mala
+    </a>
+
+</nav>
 
             <!-- Header Icons -->
             <div class="d-flex align-items-center" style="gap: 20px;">
-                <button class="btn p-0 border-0 bg-transparent" aria-label="Search">
+                <!-- <button class="btn p-0 border-0 bg-transparent" aria-label="Search">
                     <i class="fas fa-search" style="font-size: 18px; color: #333;"></i>
-                </button>
+                </button> -->
 
                 <!-- <button class="btn p-0 border-0 bg-transparent" aria-label="Account">
                     <i class="far fa-user" style="font-size: 18px; color: #333;"></i>

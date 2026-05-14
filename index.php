@@ -9,6 +9,7 @@
     <meta name="description" content="Shop authentic spiritual products, crystals, rudraksha, gemstones and more at Astroyogi Store. Lab certified, ethically sourced with 25+ years of legacy.">
     <!-- SWIPER CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<link rel="icon" type="image/x-icon" href="assets/images/logo/logo-new (1).png">
 
 <!-- SWIPER JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -67,7 +68,7 @@
             <!-- Slide 1 -->
             <div class="swiper-slide">
                 <div class="hero-slide">
-                    <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?q=80&w=1920&auto=format&fit=crop"
+                    <img src="https://store.astroyogi.com/cdn/shop/files/desktop_yantra.png?v=1767260035&width=1500a"
                         alt="Banner 1">
 
                     <div class="hero-overlay"></div>
@@ -83,7 +84,7 @@
             <!-- Slide 2 -->
             <div class="swiper-slide">
                 <div class="hero-slide">
-                    <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?q=80&w=1920&auto=format&fit=crop"
+                    <img src="assets/images/slider/1.png"
                         alt="Banner 2">
 
                     <div class="hero-overlay"></div>
@@ -99,7 +100,7 @@
             <!-- Slide 3 -->
             <div class="swiper-slide">
                 <div class="hero-slide">
-                    <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?q=80&w=1920&auto=format&fit=crop"
+                    <img src="assets/images/slider/2.png"
                         alt="Banner 3">
 
                     <div class="hero-overlay"></div>
@@ -158,17 +159,31 @@ var swiper = new Swiper(".heroSwiper", {
     <?php  include('includes/trustbar.php')?>
 
     <!-- Best Sellers Section -->
-    <section class="best-seller-section py-5">
-        <div class="container">
-             <div class="d-flex justify-content-center align-items-center mb-4">
-        
-        <div class="text-center w-100">
-            <div style="font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 600; color: #1a1a1a;">
-                BEST<br><em>SELLER</em>
+    <section class="best-seller-section py-3">
+     <div class="container py-5">
+
+        <!-- Heading -->
+        <div class="d-flex justify-content-center align-items-center mb-4">
+            <div class="text-center w-100">
+                <div class="best-seller-title">
+                    BEST<em>SELLER</em>
+                </div>
             </div>
         </div>
 
-    </div>
+        <!-- Banner Image -->
+        <div class="best-seller-banner py-5" >
+            <a href="#">
+                <img 
+                    src="assets/images/logo/Best Seller.png"
+                    alt="Best Seller Banner"
+                    class="img-fluid w-100"
+                >
+            </a>
+        </div>
+
+   
+
             
             <div class="row g-4">
                 <?php 
@@ -230,7 +245,7 @@ var swiper = new Swiper(".heroSwiper", {
             </div>
             
             <div class="text-center mt-5">
-                <a href="#" class="btn-primary-custom">View All Products</a>
+                <a href="#" class="btn-primary-shop">View All Products</a>
             </div>
         </div>
     </section>
@@ -404,7 +419,7 @@ var swiper = new Swiper(".heroSwiper", {
             </div>
             
             <div class="text-center mt-4">
-                <a href="#" class="text-decoration-none d-inline-flex align-items-center fw-semibold" style="color: #1a1a1a;">
+                <a href="#" class="text-decoration-none d-inline-flex align-items-center fw-semibold btn-primary-shop" style="color: #1a1a1a;">
                     View all products <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
@@ -412,7 +427,7 @@ var swiper = new Swiper(".heroSwiper", {
     </section>
 
     <!-- Featured Product Section -->
-    <section class="py-5" style="background: white;">
+    <!-- <section class="py-5" style="background: white;">
         <div class="container">
             <?php 
             // Fetch one featured product
@@ -479,7 +494,7 @@ var swiper = new Swiper(".heroSwiper", {
             </div>
             <?php endif; ?>
         </div>
-    </section>
+    </section> -->
 
     <script>
     function updateFeaturedImage(src, el) {
@@ -590,20 +605,48 @@ var swiper = new Swiper(".heroSwiper", {
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <div class="contact-form-section">
-                        <h3 class="contact-form-title">Not Sure What to Buy?</h3>
-                        <p class="contact-form-subtitle">Drop your number and our experts will reach out to guide you!</p>
-                        <form>
-                            <input type="text" class="form-input" placeholder="Name" required>
-                            <div class="phone-input-group">
-                                <span class="country-code">+91</span>
-                                <input type="tel" class="form-input" placeholder="Mobile Number" required style="margin-bottom: 0;">
-                            </div>
-                            <button type="submit" class="btn-primary-custom mt-3" style="width: 100%;">Submit</button>
-                        </form>
-                    </div>
-                </div>
+              <div class="col-lg-6" data-aos="fade-left">
+    <div class="contact-form-section">
+
+        <div class="form-badge">
+            ✨ Free Expert Guidance
+        </div>
+
+        <h3 class="contact-form-title">
+            Not Sure What to Buy?
+        </h3>
+
+        <p class="contact-form-subtitle">
+            Drop your number and our spiritual experts will help you choose the perfect product for your needs.
+        </p>
+
+        <form class="contact-form">
+
+            <div class="input-group-custom">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" class="form-input" placeholder="Enter Your Name" required>
+            </div>
+
+            <div class="input-group-custom phone-group">
+                <span class="country-code">+91</span>
+
+                <input 
+                    type="tel" 
+                    class="form-input phone-input" 
+                    placeholder="Enter Mobile Number" 
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn-primary-custom">
+                Get Free Consultation
+                <span>→</span>
+            </button>
+
+        </form>
+
+    </div>
+</div>
             </div>
         </div>
     </section>
@@ -614,7 +657,7 @@ var swiper = new Swiper(".heroSwiper", {
             <div class="text-center mb-5" data-aos="fade-up">
                 <h2 class="section-title" style="color: white;">Why Astrologerrajeev?</h2>
                 <p class="text-white-50 mx-auto" style="max-width: 800px;">
-                    Trust is our core value at Yogii, where authenticity is key. We use only natural stones, free from dyes and artificial polish. With 25+ years of strong legacy, every purchase supports children's education and is crafted with care, integrity, and tradition.
+                    Trust is our core value at AstrologerRajeev, where authenticity is key. We use only natural stones, free from dyes and artificial polish. With 25+ years of strong legacy, every purchase supports children's education and is crafted with care, integrity, and tradition.
                 </p>
             </div>
             

@@ -10,7 +10,7 @@
                     </div>
                     <h4 class="footer-title">Astrologerrajeev's Commitment</h4>
                     <p class="footer-description">
-                        At Yogii by Astrologerrajeev, we promise authenticity, intention, and care in everything we create. Every product is pure, ethically sourced, and crafted to help you reconnect with yourself — while also giving back through our Karma & Destiny initiative.
+                        we promise authenticity, intention, and care in everything we create. Every product is pure, ethically sourced, and crafted to help you reconnect with yourself — while also giving back through our Karma & Destiny initiative.
                     </p>
                 </div>
                 <div class="col-6 col-md-3 col-lg-2">
@@ -59,7 +59,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2026, Astrologerrajeev (Netway India Pvt. Ltd.)</p>
+                <p>&copy; 2026, Astrologerrajeev | Designed & Developed by <a href="https://makes360.com">Makes360</a></p>
             </div>
         </div>
     </footer>

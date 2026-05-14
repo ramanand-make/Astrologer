@@ -1,7 +1,7 @@
 <!-- =========================================
      MONEY CONTENT SECTION
 ========================================= -->
-<section class="money-content-section">
+<section class="money-content-section py-2">
     <div class="container">
 
         <!-- HEADING -->
