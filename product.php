@@ -73,61 +73,8 @@ if ($product['price'] > 0 && $product['sale_price'] > 0) {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <link href="assets/css/style.css" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #fff;
-            color: #282928;
-        }
-        
-        .sticky-left {
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-        }
-
-        .scrollable-right {
-            max-height: 100vh;
-            /* overflow-y: auto; */ /* We'll let the whole page scroll if needed, but the prompt says "right side portion is scrollable" */
-        }
-
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .accordion-item.active .accordion-content {
-            max-height: 500px;
-        }
-
-        .accordion-item.active .fa-chevron-down {
-            transform: rotate(180deg);
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .thumbnail-active {
-            border-color: #D4AF37 !important;
-            transform: translateY(-2px);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 1024px) {
-            .sticky-left {
-                position: static;
-            }
-        }
-    </style>
 </head>
-<body>
+<body class="product-detail-page">
 
 <?php include('includes/header.php'); ?>
 
@@ -175,7 +122,7 @@ if ($product['price'] > 0 && $product['sale_price'] > 0) {
             <div class="space-y-8">
                 <!-- Product Title & Rating -->
                 <div class="space-y-2">
-                    <h1 class="text-[17.28px] font-bold text-[#282928] tracking-tight leading-tight"><?= htmlspecialchars($product['name']); ?></h1>
+                    <h1 class="product-detail-title font-bold text-[#282928] tracking-tight leading-tight"><?= htmlspecialchars($product['name']); ?></h1>
                     <div class="flex items-center gap-3">
                         <div class="flex text-[#F5C518] text-lg">
                             <?php 

@@ -3,14 +3,14 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4">
-                    <div class="footer-social mb-4">
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <!-- <div class="footer-social mb-4"> -->
+                        <!-- <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    </div>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a> -->
+                    <!-- </div> -->
                     <h4 class="footer-title">Astrologerrajeev's Commitment</h4>
                     <p class="footer-description">
-                        we promise authenticity, intention, and care in everything we create. Every product is pure, ethically sourced, and crafted to help you reconnect with yourself — while also giving back through our Karma & Destiny initiative.
+                        we promise authenticity, intention, and <br>care in everything we create. Every <br>product is pure, ethically sourced, and <br> crafted to help you reconnect with yourself <br>— while also giving back through our Karma <br> & Destiny initiative.
                     </p>
                 </div>
                 <div class="col-6 col-md-3 col-lg-2">

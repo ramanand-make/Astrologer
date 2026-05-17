@@ -574,7 +574,11 @@ var swiper = new Swiper(".heroSwiper", {
     </section>
 
     <!-- Trust Badges & Contact Section -->
-    <section class="py-5" style="background: white;">
+    <section class="py-5" style="
+        background: url('https://store.astroyogi.com/cdn/shop/files/bcfacfe422168ab3f3ae5c05ffeb644ac6fb0cb1.png?v=1764154083&width=2000') center center / 100% 100% no-repeat;
+        width: 100%;
+         background-size: cover;
+    ">
         <div class="container">
             <div class="row g-4 align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
@@ -583,25 +587,25 @@ var swiper = new Swiper(".heroSwiper", {
                             <div style="width: 50px; height: 50px; background: #FFF9E6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-check-circle" style="color: #D4AF37; font-size: 24px;"></i>
                             </div>
-                            <span class="fw-medium">Guarantee of Purity</span>
+                            <span class="fw-medium" style="font-size: 18px !important;">Guarantee of Purity</span>
                         </div>
                         <div class="d-flex align-items-center gap-3">
                             <div style="width: 50px; height: 50px; background: #FFF9E6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-leaf" style="color: #D4AF37; font-size: 24px;"></i>
                             </div>
-                            <span class="fw-medium">Ethically Sourced</span>
+                            <span class="fw-medium"  style="font-size: 18px !important;">Ethically Sourced</span>
                         </div>
                         <div class="d-flex align-items-center gap-3">
                             <div style="width: 50px; height: 50px; background: #FFF9E6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-certificate" style="color: #D4AF37; font-size: 24px;"></i>
                             </div>
-                            <span class="fw-medium">100% Lab Certified</span>
+                            <span class="fw-medium"  style="font-size: 18px !important;">100% Lab Certified</span>
                         </div>
                         <div class="d-flex align-items-center gap-3">
                             <div style="width: 50px; height: 50px; background: #FFF9E6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-trophy" style="color: #D4AF37; font-size: 24px;"></i>
                             </div>
-                            <span class="fw-medium">25 Years of Legacy</span>
+                            <span class="fw-medium"  style="font-size: 18px !important;">25 Years of Legacy</span>
                         </div>
                     </div>
                 </div>

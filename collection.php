@@ -2,20 +2,26 @@
 require_once 'includes/functions.php';
 $conn = getSashDBConnection();
 
-$categorySlug = isset($_GET['category']) ? $_GET['category'] : '';
+$categorySlug = isset($_GET['category']) ? trim($_GET['category']) : '';
 $category = null;
 $category_id = null;
-$title = "Best Sellers";
+$categoryNotFound = false;
+$title = "All Products";
 
-if ($categorySlug) {
+if ($categorySlug !== '') {
     $category = getCategoryBySlug($conn, $categorySlug);
     if ($category) {
-        $category_id = $category['id'];
+        $category_id = (int) $category['id'];
         $title = $category['name'];
+        $products = getProducts($conn, 48, $category_id);
+    } else {
+        $categoryNotFound = true;
+        $title = 'Collection Not Found';
+        $products = [];
     }
+} else {
+    $products = getProducts($conn, 48, null);
 }
-
-$products = getProducts($conn, 12, $category_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,43 +85,9 @@ $products = getProducts($conn, 12, $category_id);
 
 
 
-<style>
-    .best-seller-section h1{
-    text-align: center;
-    font-size: 48px;
-    font-weight: 800;
-    color: #111;
-    margin-bottom: 40px;
-    position: relative;
-}
-
-/* Optional Underline Design */
-.best-seller-section h1::after{
-    content: "";
-    width: 80px;
-    height: 4px;
-    background: #D4AF37;
-    position: absolute;
-    left: 50%;
-    bottom: -12px;
-    transform: translateX(-50%);
-    border-radius: 10px;
-}
-
-/* Responsive */
-@media(max-width:768px){
-
-    .best-seller-section h1{
-        font-size: 34px;
-    }
-
-}
-</style>
-
-    <!-- Best Sellers Section -->
-    <section class="best-seller-section py-5">
+    <section class="best-seller-section collection-page py-5">
         <div class="container">
-            <h1><?= htmlspecialchars($title) ?></h1>
+            <h1 class="collection-page-title"><?= htmlspecialchars($title) ?></h1>
             <div class="product-topbar">
 
             <button class="filter-btn">
@@ -144,9 +116,21 @@ $products = getProducts($conn, 12, $category_id);
             
             <div class="row g-4">
                 <?php if (empty($products)): ?>
-                    <div class="col-12 text-center py-5">
-                        <h3>No products found in this collection.</h3>
-                        <a href="collection.php" class="btn btn-outline-dark mt-3">View All Products</a>
+                    <div class="col-12">
+                        <div class="collection-empty-state">
+                            <i class="fas fa-box-open collection-empty-icon" aria-hidden="true"></i>
+                            <?php if ($categoryNotFound): ?>
+                                <h3>This collection does not exist</h3>
+                                <p>The category you are looking for may have been moved or removed.</p>
+                            <?php elseif ($categorySlug !== ''): ?>
+                                <h3>No products found</h3>
+                                <p>There are no products in this category right now. Check back soon.</p>
+                            <?php else: ?>
+                                <h3>No products available</h3>
+                                <p>Our catalog is being updated. Please check back soon.</p>
+                            <?php endif; ?>
+                            <a href="<?= BASE_URL ?>" class="btn-primary-custom collection-empty-btn">Back to Home</a>
+                        </div>
                     </div>
                 <?php else: ?>
                     <?php 
@@ -193,7 +177,11 @@ $products = getProducts($conn, 12, $category_id);
                                         <span class="current-price">₹<?= number_format($prod['price'], 2) ?></span>
                                     <?php endif; ?>
                                 </div>
-                                <button class="add-to-cart-btn">Add to Cart</button>
+                                <button type="button" class="add-to-cart-btn"
+                                    data-id="<?= (int) $prod['id'] ?>"
+                                    data-name="<?= htmlspecialchars($prod['name'], ENT_QUOTES) ?>"
+                                    data-price="<?= $prod['sale_price'] > 0 ? $prod['sale_price'] : $prod['price'] ?>"
+                                    data-image="<?= htmlspecialchars(get_image_url($prod['image']), ENT_QUOTES) ?>">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -201,11 +189,6 @@ $products = getProducts($conn, 12, $category_id);
                 <?php endif; ?>
             </div>
             
-            <?php if (!empty($products)): ?>
-            <div class="text-center mt-5">
-                <a href="collection.php" class="btn-primary-custom">View All Products</a>
-            </div>
-            <?php endif; ?>
         </div>
     </section>
 

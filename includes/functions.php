@@ -60,25 +60,81 @@ function getCategoryBySlug($conn, $slug) {
     return $stmt->get_result()->fetch_assoc();
 }
 
+/**
+ * Category id plus all active child category ids (for parent collections).
+ */
+function getCategoryTreeIds($conn, $category_id) {
+    $category_id = (int) $category_id;
+    $ids = [$category_id];
+    $queue = [$category_id];
+
+    $stmt = $conn->prepare("SELECT id FROM categories WHERE parent_id = ? AND status = 1");
+    if (!$stmt) {
+        return $ids;
+    }
+
+    while (!empty($queue)) {
+        $parentId = array_shift($queue);
+        $stmt->bind_param("i", $parentId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $childId = (int) $row['id'];
+            if (!in_array($childId, $ids, true)) {
+                $ids[] = $childId;
+                $queue[] = $childId;
+            }
+        }
+    }
+    $stmt->close();
+
+    return $ids;
+}
+
+/**
+ * Active products; when $category_id is set, matches product_category (many-to-many).
+ */
 function getProducts($conn, $limit = 8, $category_id = null) {
-    $sql = "SELECT p.*, c.name as category_name 
-            FROM products p 
-            LEFT JOIN categories c ON p.category_id = c.id 
+    $sql = "SELECT DISTINCT p.*,
+            (SELECT c.name
+             FROM product_category pc2
+             INNER JOIN categories c ON c.id = pc2.category_id
+             WHERE pc2.product_id = p.id AND c.status = 1
+             ORDER BY pc2.id ASC
+             LIMIT 1) AS category_name
+            FROM products p
             WHERE p.status = 1";
-    
-    if ($category_id) {
-        $sql .= " AND p.category_id = ?";
+
+    $types = '';
+    $params = [];
+
+    if ($category_id !== null) {
+        $categoryIds = getCategoryTreeIds($conn, (int) $category_id);
+        if (empty($categoryIds)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($categoryIds), '?'));
+        $sql .= " AND EXISTS (
+            SELECT 1 FROM product_category pc
+            WHERE pc.product_id = p.id
+            AND pc.category_id IN ($placeholders)
+        )";
+        $types .= str_repeat('i', count($categoryIds));
+        foreach ($categoryIds as $id) {
+            $params[] = $id;
+        }
     }
-    
+
     $sql .= " ORDER BY p.id DESC LIMIT ?";
-    
+    $types .= 'i';
+    $params[] = (int) $limit;
+
     $stmt = $conn->prepare($sql);
-    if ($category_id) {
-        $stmt->bind_param("ii", $category_id, $limit);
-    } else {
-        $stmt->bind_param("i", $limit);
+    if (!$stmt) {
+        return [];
     }
-    
+
+    $stmt->bind_param($types, ...$params);
     $stmt->execute();
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
